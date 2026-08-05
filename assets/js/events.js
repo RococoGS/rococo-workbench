@@ -29,10 +29,10 @@ function bindEvents() {
   // 单密码解锁（回车亦可提交）
   const au = $("#authUnlock"); if (au) au.addEventListener("click", doUnlock);
   const ap = $("#authPwd"); if (ap) ap.addEventListener("keydown", (e) => { if (e.key === "Enter") doUnlock(); });
-  // 同步小星星：桌面悬浮显状态；手机点击即同步 + 显状态
+  // 同步小星星：点击立即手动同步（桌面 / 手机都生效）；桌面端额外悬浮显状态
   const syncBtn = $("#syncBtn");
   if (syncBtn) {
-    syncBtn.addEventListener("click", () => { if (isMobile()) { manualSync(); showSyncTip(true); } });
+    syncBtn.addEventListener("click", () => { manualSync(); showSyncTip(true); });
     syncBtn.addEventListener("mouseenter", () => { if (!isMobile()) showSyncTip(false); });
     syncBtn.addEventListener("mouseleave", () => { if (!isMobile()) hideSyncTip(); });
   }
