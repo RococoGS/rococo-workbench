@@ -485,9 +485,76 @@ function renderHealth() {
    灵感星球
    ============================================================ */
 function renderInspiration(sub) {
+  if (sub === "game") return renderGame();
   if (sub === "media") return renderMedia();
   if (sub === "book") return renderBook();
   return renderInsp();
+}
+
+/* ---- 游戏之旅 ---- */
+function renderGame() {
+  const games = state.games;
+  // 默认展示首款添加的游戏；若当前选中无效则回退到第一款
+  if (!curGameId || !games.find((x) => x.id === curGameId)) curGameId = games[0] ? games[0].id : null;
+  const g = games.find((x) => x.id === curGameId) || null;
+
+  const icons = games.length
+    ? games.map((x) => `<button class="game-chip ${x.id === curGameId ? "active" : ""}" data-action="game-select" data-id="${x.id}">
+        <span class="game-chip-ico">${esc(x.icon || "🎮")}</span>
+        <span class="game-chip-name">${esc(x.name || "未命名")}</span>
+      </button>`).join("")
+    : '<div class="empty">还没有添加游戏，在下方加一款吧</div>';
+
+  return `
+    <div class="section-grid">
+      <div class="card game-card" style="grid-column:1/-1">
+        <div class="card-title">🎮 游戏之旅</div>
+        <div class="card-sub">${SUB_TAGLINE.game}　·　点上方图标切换游戏，各自独立记录</div>
+        <div class="game-icons">${icons}</div>
+        <div class="game-divider"></div>
+        ${g ? gameDetailHtml(g) : '<div class="empty">添加一款游戏后，这里展示它的状态</div>'}
+        <div class="game-divider"></div>
+        <div class="field">
+          <label class="label">添加一款新游戏</label>
+          <div class="row">
+            <input class="input" id="gameIcon" placeholder="🎮" style="width:54px;flex:0 0 54px;text-align:center" />
+            <input class="input" id="gameName" placeholder="游戏名" />
+            <button class="btn" data-action="game-add" style="flex:0 0 auto">添加</button>
+          </div>
+        </div>
+      </div>
+    </div>`;
+}
+
+function gameDetailHtml(g) {
+  const PROGS = ["进行中", "已通关", "弃坑", "暂停"];
+  return `
+    <div class="game-status">
+      <div class="game-status-rating">
+        <span class="label" style="margin:0">我的评分</span>
+        <div class="stars" id="gameStars" data-rating="${num(g.rating)}">${starInput(num(g.rating))}</div>
+      </div>
+      <div class="field">
+        <label class="label">一句话锐评</label>
+        <textarea class="textarea" id="gameReview" placeholder="用一句话把最想说的吐槽 / 安利写出来…">${esc(g.review || "")}</textarea>
+      </div>
+      <div class="field">
+        <label class="label">吸引点</label>
+        <textarea class="textarea" id="gameAttraction" placeholder="是什么让你停不下来？剧情 / 玩法 / 画风 / 朋友…">${esc(g.attraction || "")}</textarea>
+      </div>
+      <div class="field">
+        <label class="label">当前进度状态</label>
+        <select class="input" id="gameProgress">${PROGS.map((p) => `<option ${g.progress === p ? "selected" : ""}>${p}</option>`).join("")}</select>
+      </div>
+      <div class="field">
+        <label class="label">其他备注（可选）</label>
+        <textarea class="textarea" id="gameNote" placeholder="想记点什么都可以…">${esc(g.note || "")}</textarea>
+      </div>
+      <div class="row" style="margin-top:6px">
+        <button class="btn" data-action="game-save">保存状态</button>
+        <button class="btn soft danger" data-action="game-del" data-id="${g.id}">删除该游戏</button>
+      </div>
+    </div>`;
 }
 
 function stars(r) {
