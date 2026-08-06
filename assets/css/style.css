@@ -627,3 +627,62 @@ body::after {
   .auth-card { padding: 26px 20px; }
   .auth-title { font-size: 18px; }
 }
+
+/* ============================================================
+   游戏之旅
+   ============================================================ */
+.game-card .card-sub { margin-bottom: 4px; }
+.game-icons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 10px;
+}
+.game-chip {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 5px;
+  min-width: 76px;
+  padding: 11px 9px;
+  border: 1.5px solid var(--border);
+  background: #fff;
+  border-radius: 16px;
+  cursor: pointer;
+  transition: transform .18s ease, border-color .18s ease, box-shadow .18s ease, background .18s ease;
+}
+.game-chip:hover {
+  transform: translateY(-2px);
+  border-color: var(--primary);
+  box-shadow: 0 6px 16px rgba(92, 182, 255, .18);
+}
+.game-chip.active {
+  border-color: var(--primary);
+  background: var(--primary-soft);
+  box-shadow: 0 6px 16px rgba(92, 182, 255, .22);
+}
+.game-chip-ico { font-size: 27px; line-height: 1; }
+.game-chip-name {
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--text-2);
+  max-width: 78px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.game-divider {
+  height: 1px;
+  background: var(--border);
+  opacity: .6;
+  margin: 18px 0;
+}
+.game-status-rating {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin: 2px 0 6px;
+}
+.game-status-rating .stars { font-size: 20px; }
+.game-status .field { margin-top: 13px; }
+.game-status .row { align-items: center; }
