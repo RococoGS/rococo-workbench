@@ -300,6 +300,44 @@ function handleAction(action, el, e) {
     }
     case "book-del": state.books = state.books.filter((x) => x.id !== el.dataset.id); save(); render(); break;
 
+    /* ---- 游戏之旅 ---- */
+    case "game-add": {
+      const name = ($("#gameName").value || "").trim();
+      if (!name) { toast("填一下游戏名吧"); return; }
+      const g = {
+        id: uid(), name,
+        icon: ($("#gameIcon").value || "🎮").trim() || "🎮",
+        rating: 0, review: "", attraction: "", progress: "进行中", note: "",
+      };
+      state.games.push(g);
+      curGameId = g.id;
+      save(); toast("已添加游戏 🎮"); render();
+      break;
+    }
+    case "game-select": {
+      curGameId = el.dataset.id;
+      render();
+      break;
+    }
+    case "game-save": {
+      const g = state.games.find((x) => x.id === curGameId);
+      if (!g) { toast("没有选中的游戏"); return; }
+      const sbx = $("#gameStars");
+      g.rating = num(sbx ? sbx.dataset.rating : 0);
+      g.review = ($("#gameReview").value || "").trim();
+      g.attraction = ($("#gameAttraction").value || "").trim();
+      g.progress = ($("#gameProgress").value || "进行中");
+      g.note = ($("#gameNote").value || "").trim();
+      save(); toast("游戏状态已保存 ✔"); render();
+      break;
+    }
+    case "game-del": {
+      state.games = state.games.filter((x) => x.id !== el.dataset.id);
+      if (curGameId === el.dataset.id) curGameId = state.games[0] ? state.games[0].id : null;
+      save(); toast("已删除该游戏"); render();
+      break;
+    }
+
     /* ---- 预算历史 / 食谱历史 ---- */
     case "budget-archive": {
       const type = el.dataset.budget;
