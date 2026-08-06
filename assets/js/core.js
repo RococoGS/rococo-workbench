@@ -75,6 +75,7 @@ function defaultState() {
     inspiration: [], // {id,date,text}
     media: [],       // {id,date,type,title,rating,note}
     books: [],       // {id,date,title,rating,note}
+    games: [],       // {id,name,icon,rating,review,attraction,progress,note}
   };
 }
 
@@ -122,6 +123,7 @@ function migrate(s) {
     s.bills.income = s.bills.income.map((i) => (i.month && !i.date ? { ...i, date: i.month + "-01" } : i));
   }
   if (!Array.isArray(s.recipesHistory)) s.recipesHistory = [];
+  if (!Array.isArray(s.games)) s.games = [];
   return s;
 }
 /* 本地只存密文：先加密再落盘，密码错误者即使翻本机也看不到明文 */
@@ -340,11 +342,12 @@ function startAuth() { showAuth(true); }
 let curModule = "overview";
 let openGroups = new Set(["daily"]); // 默认展开「日常」；多个模块可同时展开
 let curSub = { overview: "overview", daily: "mood", life: "budget", inspiration: "insp" };
+let curGameId = null; // 游戏之旅：当前选中的游戏
 
 const SUB_LABEL = {
   overview: "总览", mood: "今日心情", todo: "待办事项",
   budget: "预算管理", bill: "账单管理", recipe: "一周食谱", health: "健康管理",
-  insp: "灵感浮窗", media: "漫与乐", book: "千书千感",
+  insp: "灵感浮窗", media: "漫与乐", book: "千书千感", game: "游戏之旅",
 };
 /* 模块 / 功能 下方的一句话解释 */
 const SUB_TAGLINE = {
@@ -358,6 +361,7 @@ const SUB_TAGLINE = {
   insp: "心有灵犀一点通。",
   media: "精神费洛蒙与伊甸园的蛇。",
   book: "好看、爱看、多看。",
+  game: "记录每一个正在通关的世界。",
 };
 const MODULE_TITLE = { daily: "日常", life: "生活", inspiration: "灵感星球" };
 const MODULE_DESC = {
@@ -383,6 +387,7 @@ const NAV = [
     { sub: "insp", ico: "✺", label: "灵感浮窗" },
     { sub: "media", ico: "🎬", label: "漫与乐" },
     { sub: "book", ico: "📚", label: "千书千感" },
+    { sub: "game", ico: "🎮", label: "游戏之旅" },
   ]},
 ];
 
