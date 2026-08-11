@@ -283,7 +283,7 @@ function renderBill() {
         <div class="entry-list" style="margin-top:14px">${expRows || '<div class="empty">暂无支出记录</div>'}</div>
       </div>
 
-      <div class="card">
+      <div class="card" style="grid-column:1/-1">
         <div class="card-title">📜 历史月度账单</div>
         <div class="card-sub">点击月份可展开当月逐笔明细</div>
         <div class="entry-list">${(() => {
@@ -339,13 +339,13 @@ function renderRecipe() {
 
   return `
     <div class="section-grid">
-      <div class="card">
+      <div class="card" style="grid-column:1/-1">
         <div class="card-title">🍱 一周食谱</div>
         <div class="card-sub">按周几安排，每周复用 · 高亮为今天，修改后自动保存</div>
         <div class="week-grid">${cols.join("")}</div>
         <button class="btn soft" data-action="recipe-archive" style="margin-top:16px">存入本周食谱</button>
       </div>
-      <div class="card">
+      <div class="card" style="grid-column:1/-1">
         <div class="card-title">📚 历史一周食谱</div>
         <div class="card-sub">已归档的每周饮食安排</div>
         <div class="hist-toolbar">
@@ -425,8 +425,11 @@ function renderHealth() {
         <div class="ring-wrap">
           <div class="ring">
             <svg width="120" height="120">
+              <defs><linearGradient id="stepGrad" x1="0" y1="0" x2="1" y2="1">
+                <stop offset="0" stop-color="#5cb6ff"/><stop offset="1" stop-color="#a9e0ff"/>
+              </linearGradient></defs>
               <circle cx="60" cy="60" r="${R}" fill="none" stroke="#eaf1fe" stroke-width="12"/>
-              <circle cx="60" cy="60" r="${R}" fill="none" stroke="#5b8ff9" stroke-width="12" stroke-linecap="round"
+              <circle cx="60" cy="60" r="${R}" fill="none" stroke="url(#stepGrad)" stroke-width="12" stroke-linecap="round"
                 stroke-dasharray="${C}" stroke-dashoffset="${C * (1 - ringPct / 100)}"/>
             </svg>
             <div class="ring-center"><div class="rc-num">${steps ? steps.toLocaleString() : 0}</div><div class="rc-lab">/ ${STEP_GOAL} 步</div></div>
