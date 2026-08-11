@@ -686,3 +686,155 @@ body::after {
 .game-status-rating .stars { font-size: 20px; }
 .game-status .field { margin-top: 13px; }
 .game-status .row { align-items: center; }
+
+/* ============================================================
+   精致化升级层 · 层次感 / 小配件 / 小巧思
+   ============================================================ */
+:root {
+  --pink: #ff9ec7;
+  --pink-soft: #ffeaf3;
+  --mint-soft: #e6faf2;
+  --lav: #9a8ff0;
+  --lav-soft: #efeaff;
+  --peach-soft: #fff3e6;
+}
+
+::selection { background: rgba(92, 182, 255, .28); }
+
+/* ---- 全页背景漂浮装饰（星星 / 云朵，轻柔浮动） ---- */
+.bg-deco { position: fixed; inset: 0; z-index: 0; pointer-events: none; overflow: hidden; }
+.bg-deco .bd { position: absolute; line-height: 1; animation: floaty 9s ease-in-out infinite; }
+.bg-deco .bd-1 { top: 11%; left: 31%; font-size: 17px; color: rgba(92, 182, 255, .38); }
+.bg-deco .bd-2 { top: 66%; left: 4%;  font-size: 58px; color: rgba(92, 182, 255, .14); animation-delay: 1.4s; }
+.bg-deco .bd-3 { top: 22%; right: 5%; font-size: 14px; color: rgba(255, 158, 199, .42); animation-delay: 2.6s; }
+.bg-deco .bd-4 { bottom: 9%; right: 17%; font-size: 19px; color: rgba(154, 143, 240, .34); animation-delay: 3.8s; }
+.bg-deco .bd-5 { top: 47%; right: 30%; font-size: 11px; color: rgba(92, 182, 255, .3); animation-delay: 5s; }
+@keyframes floaty { 0%, 100% { transform: translateY(0) rotate(0deg); } 50% { transform: translateY(-15px) rotate(7deg); } }
+
+/* ---- 内容入场：轻微上浮，逐卡错落 ---- */
+@keyframes riseIn { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: none; } }
+.content > .page-head, .content > .greet-box, .content > .card { animation: riseIn .38s cubic-bezier(.22, .8, .36, 1) both; }
+.section-grid .card { animation: riseIn .42s cubic-bezier(.22, .8, .36, 1) both; }
+.section-grid .card:nth-child(2) { animation-delay: .06s; }
+.section-grid .card:nth-child(3) { animation-delay: .12s; }
+.section-grid .card:nth-child(4) { animation-delay: .18s; }
+
+/* ---- 页面标题：左侧渐变装饰条 + 标题后的小星星 ---- */
+.page-head { position: relative; padding-left: 16px; }
+.page-head::before {
+  content: ""; position: absolute; left: 0; top: 7px; bottom: 9px; width: 6px;
+  border-radius: 999px;
+  background: linear-gradient(180deg, var(--primary), var(--accent));
+  box-shadow: 0 2px 8px rgba(92, 182, 255, .35);
+}
+.page-title::after {
+  content: "✦"; margin-left: 9px; font-size: 14px; color: var(--accent);
+  vertical-align: 5px;
+}
+
+/* ---- 卡片：柔和渐变描边 + 居中顶部装饰豆 ---- */
+.card {
+  border-color: transparent;
+  background:
+    linear-gradient(#ffffff, #ffffff) padding-box,
+    linear-gradient(135deg, rgba(92, 182, 255, .42), rgba(169, 224, 255, .16) 55%, rgba(255, 158, 199, .26)) border-box;
+}
+.card::before {
+  left: 50%; right: auto; width: 52px; height: 5px;
+  transform: translateX(-50%);
+  border-radius: 0 0 999px 999px; opacity: .9;
+}
+
+/* ---- 桌面端：内容双列错落，更有层次（手机端保持单列） ---- */
+@media (min-width: 981px) {
+  .section-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); align-items: start; }
+}
+
+/* ---- 总览问候区：渐变标题字 + 漂浮小星星 + 柔光斑 ---- */
+.greet-hi {
+  background: linear-gradient(92deg, #2f9fe6, #5cb6ff 45%, #9a8ff0 95%);
+  -webkit-background-clip: text; background-clip: text; color: transparent;
+}
+.greet-box::after {
+  content: ""; position: absolute; width: 280px; height: 280px; right: -80px; top: -100px;
+  background: radial-gradient(circle, rgba(169, 224, 255, .55), transparent 70%);
+  pointer-events: none;
+}
+.deco-star { position: absolute; pointer-events: none; line-height: 1; animation: twinkle 3.2s ease-in-out infinite; }
+.deco-star.s1 { top: 22px; left: 34%; font-size: 15px; color: rgba(92, 182, 255, .55); }
+.deco-star.s2 { top: 48px; left: 60%; font-size: 11px; color: rgba(255, 158, 199, .6); animation-delay: 1.1s; }
+.deco-star.s3 { top: 16px; left: 80%; font-size: 13px; color: rgba(154, 143, 240, .5); animation-delay: 2.1s; }
+@keyframes twinkle {
+  0%, 100% { opacity: .25; transform: scale(.82) rotate(0deg); }
+  50% { opacity: .95; transform: scale(1.12) rotate(14deg); }
+}
+
+/* ---- 总览统计卡：图标芯片轮换上色（蓝 / 粉 / 薄荷 / 薰衣草） ---- */
+.stat-row .stat:nth-child(4n+1) .stat-ico { background: linear-gradient(135deg, var(--primary-soft), #fff); }
+.stat-row .stat:nth-child(4n+2) .stat-ico { background: linear-gradient(135deg, var(--pink-soft), #fff); }
+.stat-row .stat:nth-child(4n+3) .stat-ico { background: linear-gradient(135deg, var(--mint-soft), #fff); }
+.stat-row .stat:nth-child(4n)   .stat-ico { background: linear-gradient(135deg, var(--lav-soft), #fff); }
+
+/* ---- 侧边导航：各模块图标芯片着色 ---- */
+.nav-item[data-module="overview"] .nav-ico { background: linear-gradient(135deg, #dff2ff, #fff); }
+.nav-item[data-toggle="daily"] .nav-ico { background: linear-gradient(135deg, var(--peach-soft), #fff); }
+.nav-item[data-toggle="life"] .nav-ico { background: linear-gradient(135deg, var(--mint-soft), #fff); }
+.nav-item[data-toggle="inspiration"] .nav-ico { background: linear-gradient(135deg, var(--lav-soft), #fff); }
+
+/* ---- 记录条目：左侧渐变细条，列表更有呼吸感 ---- */
+.entry { position: relative; padding-left: 19px; }
+.entry::before {
+  content: ""; position: absolute; left: 6px; top: 13px; bottom: 13px; width: 4px;
+  border-radius: 999px;
+  background: linear-gradient(180deg, var(--primary), var(--accent));
+  opacity: .45;
+}
+.bill-hist.open::before { opacity: 0; }
+
+/* ---- 按钮：按压回弹 ---- */
+.btn { letter-spacing: .5px; }
+.btn:active { transform: translateY(0) scale(.97); }
+
+/* ---- 待办：勾选悬停柔光圈 ---- */
+.todo-check:hover { box-shadow: 0 0 0 4px rgba(95, 208, 166, .18); }
+
+/* ---- 心情表情选中态：柔光环 ---- */
+.mood-emoji.sel { box-shadow: 0 0 0 4px rgba(92, 182, 255, .16), var(--shadow-sm); }
+
+/* ---- 进度条：流光 ---- */
+.progress-fill { position: relative; overflow: hidden; }
+.progress-fill::after {
+  content: ""; position: absolute; inset: 0;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, .5), transparent);
+  animation: shine 2.6s linear infinite;
+}
+@keyframes shine { from { transform: translateX(-100%); } to { transform: translateX(100%); } }
+
+/* ---- 资讯标签：轻投影 ---- */
+.news-tag { box-shadow: 0 3px 8px rgba(0, 0, 0, .1); }
+
+/* ---- 空状态：小云朵点缀 ---- */
+.empty::before { content: "☁"; display: block; font-size: 26px; margin-bottom: 6px; opacity: .5; }
+
+/* ---- Toast：玻璃拟态胶囊 ---- */
+.toast {
+  background: rgba(55, 80, 122, .92);
+  border: 1px solid rgba(255, 255, 255, .26);
+  border-radius: 999px;
+  backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);
+}
+
+/* ---- 侧栏底部小字：小云朵 ---- */
+.foot-tip::before { content: "☁ "; }
+
+/* ---- 游戏图标选中态：渐变底 ---- */
+.game-chip.active { background: linear-gradient(135deg, var(--primary-soft), #fff); }
+
+/* ---- 减少动态偏好：尊重系统设置 ---- */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: .01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: .01ms !important;
+  }
+}
