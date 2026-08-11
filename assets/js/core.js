@@ -558,6 +558,9 @@ function renderOverview() {
     <div class="clock-inpage" id="clockIn"></div>
     <div class="greet-box">
       <div class="deco-cloud" aria-hidden="true">☁</div>
+      <span class="deco-star s1" aria-hidden="true">✦</span>
+      <span class="deco-star s2" aria-hidden="true">✧</span>
+      <span class="deco-star s3" aria-hidden="true">✦</span>
       <div class="deco-puppy" aria-hidden="true">
         <svg viewBox="0 0 120 120" width="100%" height="100%">
           <path d="M40 32 Q14 0 30 42 Q35 64 50 52 Z" fill="#fff" stroke="#cfeaff" stroke-width="3" stroke-linejoin="round"/>
