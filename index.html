@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
+  <title>Rococo · 个人工作台</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;600;700;800&family=Nunito:wght@600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="assets/css/style.css?v=5" />
+</head>
+<body>
+  <!-- 全页背景漂浮小装饰（星星 / 云朵） -->
+  <div class="bg-deco" aria-hidden="true">
+    <span class="bd bd-1">✦</span>
+    <span class="bd bd-2">☁</span>
+    <span class="bd bd-3">✦</span>
+    <span class="bd bd-4">❀</span>
+    <span class="bd bd-5">✧</span>
+  </div>
+
+  <div class="app" id="app">
+    <!-- 左侧导航区 -->
+    <aside class="sidebar" id="sidebar">
+      <div class="sidebar-top">
+        <div class="brand">
+          <div class="brand-avatar">
+            <img src="assets/img/avatar.png" alt="头像" />
+          </div>
+          <div class="brand-text">
+            <div class="brand-name">Rococo
+              <button class="sync-star" id="syncBtn" aria-label="同步状态">
+                <svg viewBox="0 0 24 24" width="15" height="15" fill="currentColor" stroke="#e0a92e" stroke-width="1.3" stroke-linejoin="round">
+                  <path d="M12 2.8l2.86 6.02 6.54.93-4.74 4.6 1.16 6.52L12 18.9l-5.82 3.35 1.16-6.52-4.74-4.6 6.54-.93z"/>
+                </svg>
+              </button>
+            </div>
+            <div class="brand-sub">ctrl my own life.</div>
+            <div class="sync-tip" id="syncTip"></div>
+          </div>
+        </div>
+        <button class="collapse-btn" id="collapseBtn" title="收起 / 展开菜单" aria-label="收起或展开菜单">❮</button>
+      </div>
+
+      <nav class="nav" id="nav">
+        <!-- 由 JS 渲染手风琴导航 -->
+      </nav>
+
+      <div class="sidebar-foot">
+        <button class="ghost-btn" data-action="export-data" title="导出全部数据(JSON)">导出数据</button>
+        <button class="ghost-btn" data-action="import-data" title="从 JSON 文件恢复数据">导入数据</button>
+        <button class="ghost-btn danger" data-action="reset-data" title="清空本地全部数据">清空数据</button>
+        <button class="ghost-btn" data-action="logout" title="退出登录">退出登录</button>
+        <div class="foot-tip">数据云端同步 · 存于你的 Supabase</div>
+        <input type="file" id="importFile" accept="application/json,.json" hidden />
+      </div>
+    </aside>
+
+    <!-- 手机端遮罩 -->
+    <div class="backdrop" id="backdrop"></div>
+
+    <!-- 右侧内容区 -->
+    <main class="content" id="content">
+      <!-- 由 JS 渲染 -->
+    </main>
+  </div>
+
+  <!-- 手机端菜单开关 -->
+  <button class="fab-toggle" id="fabToggle" aria-label="打开菜单">☰</button>
+
+  <div class="toast" id="toast"></div>
+  <div class="clock" id="clock"></div>
+
+  <!-- 登录遮罩 -->
+  <div class="auth-overlay" id="authOverlay">
+    <div class="auth-card">
+      <div class="auth-avatar"><img src="assets/img/avatar.png" alt="头像" /></div>
+      <div class="auth-title">Rococo的领域展开</div>
+      <div class="auth-sub">身无彩凤双飞翼，心有灵犀一点通。</div>
+      <input class="input" id="authPwd" type="password" placeholder="输入同步密码" autocomplete="current-password" />
+      <button class="btn primary" id="authUnlock" style="width:100%">进入工作台</button>
+      <div class="auth-msg" id="authMsg"></div>
+      <div class="auth-tip">数据已在云端加密存储，密码不会上传；输错密码将无法解密，任何人（包括你自己）都看不到任何数据。</div>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
+  <script src="assets/js/config.js?v=5"></script>
+  <script src="assets/js/core.js?v=5"></script>
+  <script src="assets/js/modules.js?v=5"></script>
+  <script src="assets/js/events.js?v=5"></script>
+</body>
+</html>
