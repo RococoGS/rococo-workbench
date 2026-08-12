@@ -1,3 +1,0 @@
-// Supabase 凭证（由 WorkBuddy 注入，请勿公开 service_role 密钥）
-const SUPABASE_URL = "https://ocodteabtmujsbjfueek.supabase.co";
-const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im9jb2R0ZWFidG11anNiamZ1ZWVrIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODU4MjEyMjcsImV4cCI6MjEwMTM5NzIyN30.fdKZFf488jHCWG6adoowctdSK4571nmOlvHpO5lU6rg";
