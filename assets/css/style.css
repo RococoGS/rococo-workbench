@@ -271,9 +271,16 @@ body::after {
 .stat {
   background: #fff; border: 1.5px solid var(--border); border-radius: var(--radius-sm);
   padding: 18px; display: flex; flex-direction: column; gap: 10px;
-  cursor: default; transition: all .2s ease; position: relative;
+  cursor: pointer; transition: all .2s ease; position: relative;
 }
 .stat:hover { transform: translateY(-4px); box-shadow: var(--shadow); border-color: var(--accent); }
+.stat::after {
+  content: "→"; position: absolute; top: 12px; right: 12px;
+  font-size: 14px; font-weight: 800; color: var(--muted);
+  opacity: 0; transform: translateX(-4px); transition: all .2s ease;
+}
+.stat:hover::after { opacity: 1; transform: translateX(0); }
+.stat:focus-visible { outline: none; box-shadow: 0 0 0 3px rgba(92, 182, 255, .35); border-color: var(--primary); }
 .stat-ico {
   width: 42px; height: 42px; border-radius: 14px;
   background: linear-gradient(135deg, var(--primary-soft), #fff);
