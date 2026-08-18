@@ -42,8 +42,14 @@ function bindEvents() {
   $("#fabToggle").addEventListener("click", toggleNav);
   $("#backdrop").addEventListener("click", () => setNav(true));
 
-  // 内容区点击（子标签 + 行为按钮）
+  // 内容区点击（总览模块跳转 + 子标签 + 行为按钮）
   $("#content").addEventListener("click", (e) => {
+    const card = e.target.closest(".stat[data-module]");
+    if (card) {
+      selectSub(card.dataset.module, card.dataset.sub);
+      if (isMobile()) setNav(true);
+      return;
+    }
     const st = e.target.closest(".subtab");
     if (st) {
       curSub[curModule] = st.dataset.sub;
@@ -52,6 +58,12 @@ function bindEvents() {
     }
     const act = e.target.closest("[data-action]");
     if (act) handleAction(act.dataset.action, act, e);
+  });
+  // 总览模块卡片支持键盘 Enter 跳转
+  $("#content").addEventListener("keydown", (e) => {
+    if (e.key !== "Enter") return;
+    const card = e.target.closest(".stat[data-module]");
+    if (card) { e.preventDefault(); card.click(); }
   });
 
   // 食谱输入框即时保存 + 历史筛选
