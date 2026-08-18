@@ -557,18 +557,18 @@ function renderOverview() {
   const weekBudgetPct = weekBudget > 0 ? Math.min(100, (weekExp / weekBudget) * 100) : 0;
 
   const stats = [
-    { ico: "☀", label: "今日心情", val: mood ? mood.emoji : "—", tip: mood ? `今日心情：${esc(mood.text || "（未写文字）")}` : "今天还没记录心情，去「日常·今日心情」记一下吧" },
-    { ico: "✓", label: "待办进度", val: `${todoDone}<small>/${todos.length}</small>`, tip: todos.length ? `已完成 ${todoDone} 项，剩余 ${todos.length - todoDone} 项` : "暂无待办，轻装上阵" },
-    { ico: "¥", label: "本周支出", val: money(Math.round(weekExp)), tip: weekBudget > 0 ? `周预算 ${money(weekBudget)}，已用 ${weekBudgetPct.toFixed(0)}%` : "尚未设置周预算" },
-    { ico: "⚖", label: "最新体重", val: lastWeight ? lastWeight.value + "<small>kg</small>" : "—", tip: lastWeight ? `记录于 ${lastWeight.date}` : "去「生活·健康管理」记录体重" },
-    { ico: "👟", label: "今日步数", val: steps ? steps.toLocaleString() : "—", tip: steps ? `约消耗 ${cal} 千卡` : "去健康模块记录今日步数" },
-    { ico: "✺", label: "今日灵感", val: inspToday ? inspToday + "<small>条</small>" : "未记", tip: inspToday ? "今天已有灵感入账 🎉" : "灵感稍纵即逝，去记一条吧" },
-    { ico: "🎬", label: "在追影音", val: mediaValHtml(lastDrama, lastMusic), tip: mediaTip(lastDrama, lastMusic) },
-    { ico: "📚", label: "已读好书", val: lastBook ? esc(lastBook.title) : "—", tip: lastBook ? `最近在读：《${esc(lastBook.title)}》` : "千书千感 · 还没记录书" },
+    { mod: "daily", sub: "mood", ico: "☀", label: "今日心情", val: mood ? mood.emoji : "—", tip: mood ? `今日心情：${esc(mood.text || "（未写文字）")}` : "今天还没记录心情，去「日常·今日心情」记一下吧" },
+    { mod: "daily", sub: "todo", ico: "✓", label: "待办进度", val: `${todoDone}<small>/${todos.length}</small>`, tip: todos.length ? `已完成 ${todoDone} 项，剩余 ${todos.length - todoDone} 项` : "暂无待办，轻装上阵" },
+    { mod: "life", sub: "budget", ico: "¥", label: "本周支出", val: money(Math.round(weekExp)), tip: weekBudget > 0 ? `周预算 ${money(weekBudget)}，已用 ${weekBudgetPct.toFixed(0)}%` : "尚未设置周预算" },
+    { mod: "life", sub: "health", ico: "⚖", label: "最新体重", val: lastWeight ? lastWeight.value + "<small>kg</small>" : "—", tip: lastWeight ? `记录于 ${lastWeight.date}` : "去「生活·健康管理」记录体重" },
+    { mod: "life", sub: "health", ico: "👟", label: "今日步数", val: steps ? steps.toLocaleString() : "—", tip: steps ? `约消耗 ${cal} 千卡` : "去健康模块记录今日步数" },
+    { mod: "inspiration", sub: "insp", ico: "✺", label: "今日灵感", val: inspToday ? inspToday + "<small>条</small>" : "未记", tip: inspToday ? "今天已有灵感入账 🎉" : "灵感稍纵即逝，去记一条吧" },
+    { mod: "inspiration", sub: "media", ico: "🎬", label: "在追影音", val: mediaValHtml(lastDrama, lastMusic), tip: mediaTip(lastDrama, lastMusic) },
+    { mod: "inspiration", sub: "book", ico: "📚", label: "已读好书", val: lastBook ? esc(lastBook.title) : "—", tip: lastBook ? `最近在读：《${esc(lastBook.title)}》` : "千书千感 · 还没记录书" },
   ];
   const statHtml = stats
     .map(
-      (s) => `<div class="stat">
+      (s) => `<div class="stat" data-module="${s.mod}" data-sub="${s.sub}" role="button" tabindex="0" aria-label="进入${s.label}">
         <div class="stat-ico">${s.ico}</div>
         <div class="stat-label">${s.label}</div>
         <div class="stat-value">${s.val}</div>
