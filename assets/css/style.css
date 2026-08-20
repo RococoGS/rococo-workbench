@@ -386,6 +386,11 @@ body::after {
 .todo-text { flex: 1; font-size: 14.5px; }
 .todo-del { border: none; background: transparent; color: var(--muted); cursor: pointer; font-size: 17px; padding: 4px 8px; border-radius: 8px; }
 .todo-del:hover { color: var(--bad); background: #fff0f1; }
+/* 漫与乐：固定在总览的爱心按钮（位于记录条右上角） */
+.media-pin { border: none; background: transparent; cursor: pointer; padding: 4px 6px; border-radius: 8px; color: var(--muted); line-height: 0; transition: transform .18s ease, background .18s ease, color .18s ease; }
+.media-pin:hover { background: #fff0f4; color: #ff5b7f; transform: scale(1.12); }
+.media-pin.on { color: #ff5b7f; }
+.media-pin.on:hover { background: #ffe4ec; }
 .progress-wrap { margin-top: 4px; }
 .progress-bar { height: 11px; border-radius: 999px; background: var(--primary-soft); overflow: hidden; }
 .progress-fill { height: 100%; background: linear-gradient(90deg, var(--primary), var(--accent)); border-radius: 999px; transition: width .4s ease; }
