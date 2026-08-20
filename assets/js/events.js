@@ -294,11 +294,27 @@ function handleAction(action, el, e) {
       const title = ($("#mTitle").value || "").trim();
       const rating = num($("#mStars").dataset.rating);
       if (!title) { toast("填一下名称吧"); return; }
-      state.media.push({ id: uid(), date: t, type: $("#mType").value, title, rating, note: ($("#mNote").value || "").trim() });
+      state.media.push({ id: uid(), date: t, type: $("#mType").value, title, rating, note: ($("#mNote").value || "").trim(), pinned: false });
       save(); toast("已记录 🎬"); render();
       break;
     }
     case "media-del": state.media = state.media.filter((x) => x.id !== el.dataset.id); save(); render(); break;
+    case "media-pin": {
+      const it = state.media.find((x) => x.id === el.dataset.id);
+      if (!it) break;
+      const isMusic = it.type === "music";
+      if (it.pinned) {
+        it.pinned = false;
+        save(); toast("已取消总览固定");
+      } else {
+        // 同展示位（剧/动漫 或 音乐）只固定一个：先清掉同类型的其他固定
+        state.media.forEach((x) => { if ((x.type === "music") === isMusic) x.pinned = false; });
+        it.pinned = true;
+        save(); toast("已固定到总览 ❤");
+      }
+      render();
+      break;
+    }
 
     /* ---- 千书千感 ---- */
     case "book-add": {
