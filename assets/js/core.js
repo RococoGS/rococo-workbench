@@ -524,9 +524,9 @@ function mediaValHtml(d, m) {
 }
 function mediaTip(d, m) {
   const parts = [];
-  if (d) parts.push(`最近剧/动漫：《${esc(d.title)}》`);
-  if (m) parts.push(`最近音乐：《${esc(m.title)}》`);
-  return parts.length ? parts.join("　") : "去「灵感星球·漫与乐」记录剧 / 动漫 / 音乐吧";
+  if (d) parts.push(`总览展示剧/动漫：《${esc(d.title)}》${d.pinned ? " 📌已固定" : ""}`);
+  if (m) parts.push(`总览展示音乐：《${esc(m.title)}》${m.pinned ? " 📌已固定" : ""}`);
+  return parts.length ? parts.join("　") : "去「灵感星球·漫与乐」记录剧 / 动漫 / 音乐，并点爱心固定在总览";
 }
 
 function renderOverview() {
@@ -547,10 +547,13 @@ function renderOverview() {
   const steps = num(state.health.steps[t]);
   const cal = (steps * 0.04).toFixed(0);
   const inspToday = state.inspiration.filter((x) => x.date === t).length;
-  // 最近记录的剧/动漫 与 音乐
-  const mediaSorted = [...state.media].sort((a, b) => (a.date < b.date ? 1 : -1));
-  const lastDrama = mediaSorted.find((m) => m.type === "drama" || m.type === "anime");
-  const lastMusic = mediaSorted.find((m) => m.type === "music");
+  // 总览「在追影音」：优先展示被爱心固定的作品，否则展示最近记录
+  const isDm = (m) => m.type === "drama" || m.type === "anime";
+  const mediaSorted = [...state.media].sort((a, b) => (a.date < b.date ? 1 : -1)); // 新→旧
+  const pinnedDm = mediaSorted.find((m) => isDm(m) && m.pinned);
+  const pinnedMusic = mediaSorted.find((m) => m.type === "music" && m.pinned);
+  const lastDrama = pinnedDm || mediaSorted.find(isDm);
+  const lastMusic = pinnedMusic || mediaSorted.find((m) => m.type === "music");
   const booksSorted = [...state.books].sort((a, b) => (a.date < b.date ? 1 : -1));
   const lastBook = booksSorted[0];
   const weekBudget = budgetTotal(state.budget.weekly);
