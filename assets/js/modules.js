@@ -631,6 +631,7 @@ function renderMedia() {
           <div class="entry-meta">${m.date}</div>
           ${m.note ? `<div class="entry-note">${esc(m.note)}</div>` : ""}
         </div>
+        <button class="media-pin ${m.pinned ? "on" : ""}" data-action="media-pin" data-id="${m.id}" title="${m.pinned ? "已固定在总览，点此取消" : "固定在总览展示页"}" aria-pressed="${m.pinned ? "true" : "false"}">${heartSvg(!!m.pinned)}</button>
         <button class="todo-del" data-action="media-del" data-id="${m.id}">✕</button>
       </div>`;
     })
