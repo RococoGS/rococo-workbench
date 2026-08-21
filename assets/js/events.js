@@ -378,6 +378,48 @@ function handleAction(action, el, e) {
       break;
     }
     case "budget-hist-del": state.budget.history = state.budget.history.filter((h) => h.id !== el.dataset.id); save(); render(); break;
+
+    /* ---- 心愿单 ---- */
+    case "wish-add": {
+      const name = ($("#wishName").value || "").trim();
+      const price = num($("#wishPrice").value);
+      const priority = $("#wishPrio").value;
+      const note = ($("#wishNote").value || "").trim();
+      if (!name) { toast("写一下心愿物品吧"); return; }
+      if (price <= 0) { toast("价格要大于 0"); return; }
+      if (wishEditId) {
+        const it = state.budget.wishlist.find((x) => x.id === wishEditId);
+        if (it) { it.name = name; it.price = price; it.priority = priority; it.note = note; }
+        wishEditId = null;
+        save(); toast("心愿已更新 🎁"); render();
+      } else {
+        state.budget.wishlist.push({ id: uid(), name, price, priority, note, got: false });
+        save(); toast("心愿已加入 🎁"); render();
+      }
+      break;
+    }
+    case "wish-del": {
+      if (!confirm("确定删除这个心愿吗？")) return;
+      state.budget.wishlist = state.budget.wishlist.filter((x) => x.id !== el.dataset.id);
+      if (wishEditId === el.dataset.id) wishEditId = null;
+      save(); render();
+      break;
+    }
+    case "wish-got": {
+      const it = state.budget.wishlist.find((x) => x.id === el.dataset.id);
+      if (it) { it.got = !it.got; save(); render(); }
+      break;
+    }
+    case "wish-edit": {
+      wishEditId = el.dataset.id;
+      render();
+      break;
+    }
+    case "wish-cancel": {
+      wishEditId = null;
+      render();
+      break;
+    }
     case "recipe-archive": {
       const [mon] = weekRange();
       const label = `${mon} 周`;
