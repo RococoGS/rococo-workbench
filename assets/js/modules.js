@@ -102,6 +102,89 @@ function renderLife(sub) {
   return { budget: renderBudget, bill: renderBill, recipe: renderRecipe, health: renderHealth }[sub]();
 }
 
+/* ---- 心愿单（预算管理内） ---- */
+let wishEditId = null;
+
+function renderWish() {
+  if (!Array.isArray(state.budget.wishlist)) state.budget.wishlist = [];
+  const list = state.budget.wishlist;
+  const total = list.reduce((a, w) => a + num(w.price), 0);
+  const gotAmt = list.filter((w) => w.got).reduce((a, w) => a + num(w.price), 0);
+  const pending = total - gotAmt;
+  const pct = total > 0 ? Math.round((gotAmt / total) * 100) : 0;
+
+  const PRIO = {
+    "必入": { k: "must", ico: "🔥" },
+    "很想要": { k: "want1", ico: "💛" },
+    "想要": { k: "want2", ico: "🩵" },
+  };
+  const edit = wishEditId ? list.find((w) => w.id === wishEditId) : null;
+
+  const summary = `
+    <div class="wish-summary">
+      <div class="wish-stat"><div class="ws-label">心愿</div><div class="ws-val">${list.length} 件</div></div>
+      <div class="wish-stat"><div class="ws-label">心愿总额</div><div class="ws-val">${money(total)}</div></div>
+      <div class="wish-stat"><div class="ws-label">待购</div><div class="ws-val ws-bad">${money(pending)}</div></div>
+      <div class="wish-stat"><div class="ws-label">已入手</div><div class="ws-val ws-good">${money(gotAmt)}</div></div>
+    </div>
+    <div class="wish-progress">
+      <div class="wish-progress-bar"><div class="wish-progress-fill" style="width:${pct}%"></div></div>
+      <div class="wish-progress-text">${list.filter((w) => w.got).length ? `已入手 ${pct}% · 还差 ${money(pending)} 圆梦 🎀` : "还没有入手任何心愿，挑一件先冲？"}</div>
+    </div>`;
+
+  const form = `
+    <div class="wish-form">
+      <div class="card-sub">${edit ? "正在编辑心愿，改完点「保存修改」" : "把特别想要的东西记下来，下面自动汇总"}</div>
+      <div class="field">
+        <label class="label">心愿物品</label>
+        <div class="row">
+          <input class="input" id="wishName" placeholder="例如：降噪耳机 / 一次旅行 / 一本画册" value="${edit ? esc(edit.name) : ""}" />
+          <input class="input" id="wishPrice" type="number" min="0" step="0.01" placeholder="价格 ¥" value="${edit ? num(edit.price) : ""}" style="flex:0 0 140px;min-width:120px;text-align:right" />
+        </div>
+      </div>
+      <div class="row">
+        <select class="input" id="wishPrio" style="flex:0 0 auto;min-width:132px">
+          ${["必入", "很想要", "想要"].map((p) => `<option value="${p}" ${edit && edit.priority === p ? "selected" : ""}>${PRIO[p].ico} ${p}</option>`).join("")}
+        </select>
+        <button class="btn" data-action="wish-add" style="flex:0 0 auto">${edit ? "保存修改" : "➕ 添加心愿"}</button>
+        ${edit ? '<button class="btn soft" data-action="wish-cancel" style="flex:0 0 auto">取消</button>' : ""}
+      </div>
+      <div class="field" style="margin-top:12px;margin-bottom:0">
+        <label class="label">文字说明（可选）</label>
+        <textarea class="textarea" id="wishNote" placeholder="为什么想要它、型号 / 链接、打算什么时候买…">${edit ? esc(edit.note || "") : ""}</textarea>
+      </div>
+    </div>`;
+
+  const cards = list.length
+    ? `<div class="wish-grid">${list.map((w) => {
+        const pr = PRIO[w.priority] || PRIO["想要"];
+        return `<div class="wish-card ${w.got ? "got" : ""}">
+          <div class="wish-top">
+            <span class="wish-prio prio-${pr.k}">${pr.ico} ${w.priority}</span>
+            <div class="wish-actions">
+              <button class="wish-toggle ${w.got ? "on" : ""}" data-action="wish-got" data-id="${w.id}">${w.got ? "✓ 已入手" : "标记入手"}</button>
+              <button class="wish-ico" data-action="wish-edit" data-id="${w.id}" title="编辑">✎</button>
+              <button class="wish-ico" data-action="wish-del" data-id="${w.id}" title="删除">✕</button>
+            </div>
+          </div>
+          <div class="wish-name">${esc(w.name)}</div>
+          <div class="wish-price">${money(w.price)}</div>
+          ${w.note ? `<div class="wish-note">${esc(w.note)}</div>` : ""}
+        </div>`;
+      }).join("")}</div>`
+    : `<div class="empty">心愿单是空的，记下第一件想要的东西吧 🎁</div>`;
+
+  return `
+    <div class="card wishlist-card" style="grid-column:1/-1">
+      <div class="card-title">🎁 心愿单</div>
+      <div class="card-sub">特别想买的都列在这里 · 自动汇总总花费与待购金额</div>
+      ${summary}
+      ${form}
+      <div class="wish-divider"></div>
+      ${cards}
+    </div>`;
+}
+
 /* ---- 预算管理 ---- */
 function renderBudget() {
   const b = state.budget;
@@ -204,6 +287,7 @@ function renderBudget() {
         </div>
         <div class="entry-list" id="budgetHistList">${histRows || '<div class="empty">还没有归档的预算，点上方按钮存入</div>'}</div>
       </div>
+      ${renderWish()}
     </div>`;
 }
 
