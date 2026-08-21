@@ -58,6 +58,7 @@ function defaultState() {
       wallets: { wechat: 0, alipay: 0, card1: 0, card2: 0 },
       deposits: [], // {id,date,wallet,amount,note}
       history: [],  // {id,type:'monthly'|'weekly',label,date,amounts:{essentials,rent,emotion,other},total}
+      wishlist: [], // {id,name,price,priority:'必入'|'很想要'|'想要',note,got}
     },
     bills: {
       income: [],  // {id,month,amount,source}
@@ -124,6 +125,8 @@ function migrate(s) {
   }
   if (!Array.isArray(s.recipesHistory)) s.recipesHistory = [];
   if (!Array.isArray(s.games)) s.games = [];
+  if (!s.budget) s.budget = {};
+  if (!Array.isArray(s.budget.wishlist)) s.budget.wishlist = [];
   return s;
 }
 /* 本地只存密文：先加密再落盘，密码错误者即使翻本机也看不到明文 */
